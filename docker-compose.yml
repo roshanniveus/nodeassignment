@@ -1,0 +1,34 @@
+version: "3"
+services:
+  myapp:
+    container_name: myapp
+    restart: always
+    build: .
+    ports:
+      - "4000:3000"
+    environment:
+      MONGODB_HOST: mongo
+      REDIS_HOST: redis
+    depends_on:
+      - redis
+      - mongo
+  mongo:
+    container_name: mongo
+    restart: always
+    image: mongo:latest
+    volumes:
+      - mongo_db:/data/db
+    ports:
+      - '27117:27017'
+  redis:
+    container_name: redis
+    restart: always
+    image: redis:latest
+    ports:
+      - '6378:6379'
+    volumes:
+      - redis_db:/data
+
+volumes:
+  mongo_db: {}
+  redis_db: {}
